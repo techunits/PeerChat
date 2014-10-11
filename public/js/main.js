@@ -80,6 +80,16 @@ $(document).ready(function() {
 		}
 	});
 	
+	//	start video chat
+	$('img#startVideo').click(function() {
+		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+		navigator.getUserMedia({video: true, audio: true}, function(stream) {
+			document.querySelector('#localVideo').src = window.URL.createObjectURL(stream);
+			$('img#startVideo').hide();
+			$('#localVideo').show();
+		}, function() {});
+	});
+	
 	window.addEventListener("beforeunload", function(e) {
 		socket.emit('PC:DISCONNECT');
 	}, false);
