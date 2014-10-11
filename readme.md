@@ -13,11 +13,6 @@ Feel Free to commit, Appreciated.
   - Enter Name
   - Enter Same room name which entered before
   - And You Go....
-  
-
-## Authors
-
-* Hiren Kavad
 
 ## License
 
@@ -25,5 +20,3 @@ This bundle is dual-licensed under MIT and GPL licenses.
 
 * [http://www.opensource.org/licenses/mit-license.php](http://www.opensource.org/licenses/mit-license.php)
 * [http://www.gnu.org/licenses/gpl.html](http://www.gnu.org/licenses/gpl.html)
-
-Use it, change it, fork it, sell it. Do whatever you want, but please leave the author attribution.
