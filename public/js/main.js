@@ -80,8 +80,11 @@ $(document).ready(function() {
 		}
 	});
 	
+	window.addEventListener("beforeunload", function(e) {
+		socket.emit('PC:DISCONNECT');
+	}, false);
 	
-	//	handle welcome event
+	//	handle user count event
 	socket.on('PC:USERCOUNT', function(info) {
 		$('#chatbox').append('<p class="colorGrey"><i class="glyphicon glyphicon-info-sign"></i> ' + info.message + '</p>');
 	});

@@ -55,6 +55,15 @@ io.sockets.on('connection', function(socket) {
 		});
 	});
 	
+	socket.on('PC:DISCONNECT', function(info) {
+		if(userList[socket.id]) {
+			socket.broadcast.emit('PC:BROADCAST', {
+				message: userList[socket.id] + ' left the chat room!!!',
+				nickname: userList[socket.id]
+			});
+		}
+	});
+	
     /*socket.on('create or join', function(room) {
         var numClients = io.sockets.clients(room).length;
 
