@@ -44,11 +44,35 @@ var sdpConstraints = {
 // The following var's act as the interface between our HTML/CSS code
 // and this JS. These allow us to interact between the UI and our application
 // logic
-var startButton = document.getElementById("startButton");
-
-startButton.disabled = false;
-
-startButton.onclick = createConnection;
+$(document).ready(function() {
+	$('form[name="joinChat"]').submit(function() {
+		var nickname = $(this).find('input[name="nickname"]').val();
+		var room = $(this).find('input[name="room"]').val();
+		
+		if('' === nickname || '' === room) {
+			alert('Sorry!!! Both Nickname and Room are Required.');
+		}
+		else {
+			socket.emit('PC:JOIN', {
+				room: room,
+				nickname: nickname
+			});
+		}
+		
+		return false;
+	});
+	
+	
+	
+	//	handle broadcase message
+	socket.on('PC:BROADCAST', function(info) {
+		$('#chat').append("<span style='color:green; padding-left: 5px;'>" + message.msg + "</span></br>");
+	});
+});
+	
+//	var startButton = document.getElementById("startButton");
+//	startButton.disabled = false;
+//	startButton.onclick = createConnection;
 
 //closeButton.onclick = closeDataChannels;
 
@@ -80,7 +104,7 @@ function createConnection() {
   $('.navbar-toggle').trigger('click');
   localuser = document.getElementById("userId").value;
   if (room !== '') {
-    socket.emit('create or join', room);
+    socket.emit('PC:JOIN', room);
   }
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
   navigator.getUserMedia(constraints, handleUserMedia, handleUserMediaError);

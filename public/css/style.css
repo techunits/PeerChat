@@ -2,6 +2,11 @@ body{
     padding-top: 25px;
     background-color: #eee
 }
+ul, ol, li {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
 
 /** General Css for mobile and other devices */
 .container {
@@ -61,11 +66,6 @@ img{
 	.local{	
 		margin-top: 0px;
 	}
-
-	#remoteimg{
-	 	border: solid 1px;
-	 	width: 85%;	 
- 	}
  	
 	.jumbotron{
 		margin-top: -45px;
