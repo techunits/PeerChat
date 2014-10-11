@@ -16,6 +16,10 @@ var userList = [];
 io.sockets.on('connection', function(socket) {
 	console.log('New Socket Client: ' + socket.id);
 	
+	socket.emit('PC:USERCOUNT', {
+		message: 'There are ' + userList.length + ' online users in this room!!!',
+	});
+	
 	socket.on('PC:JOIN', function(info) {
 		//	broadcast joining message to everyone in the room if new user
 		if(! userList[socket.id]) {
@@ -23,6 +27,11 @@ io.sockets.on('connection', function(socket) {
 			socket.broadcast.emit('PC:BROADCAST', {
 				message: info.nickname + ' joined to this room just now!!!',
 				nickname: info.nickname
+			});
+			
+			//	emit welcome event to the current user
+			socket.emit('PC:WELCOME', {
+				message: 'Welcome ' + info.nickname + ' to this room!!!',
 			});
 		}
 		else {
@@ -34,7 +43,16 @@ io.sockets.on('connection', function(socket) {
    
 	
 	socket.on('PC:CHAT', function(info) {
+		socket.broadcast.emit('PC:CHAT_BROADCAST', {
+			message: info.message,
+			nickname: userList[socket.id]
+		});
 		
+		socket.emit('PC:CHAT_BROADCAST', {
+			message: info.message,
+			nickname: userList[socket.id],
+			self: true
+		});
 	});
 	
     /*socket.on('create or join', function(room) {

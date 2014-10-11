@@ -57,16 +57,55 @@ $(document).ready(function() {
 				room: room,
 				nickname: nickname
 			});
+			
 		}
 		
 		return false;
 	});
 	
+	//	check whether chatroom is activated
+	$('input[name="textmsg"]').click(function() {
+		if('readonly' == $(this).attr('readonly')) {
+			alert('Please provide nickname & join chat room!!!');
+		}
+	});
 	
 	
-	//	handle broadcase message
+	$('input[name="textmsg"]').keyup(function(e) {
+		if(13 === e.which) {
+			socket.emit('PC:CHAT', {
+				message: $(this).val(),
+			});
+			$(this).attr("readonly", true);
+		}
+	});
+	
+	
+	//	handle welcome event
+	socket.on('PC:USERCOUNT', function(info) {
+		$('#chatbox').append('<p class="colorGrey"><i class="glyphicon glyphicon-info-sign"></i> ' + info.message + '</p>');
+	});
+	
+	//	handle welcome event
+	socket.on('PC:WELCOME', function(info) {
+		$('#chatbox').append('<p class="colorGreen"><i class="glyphicon glyphicon-heart"></i> ' + info.message + '</p>');
+		$('input[name="textmsg"]').attr("readonly", false);
+	});
+	
+	//	handle Chat broadcast message
+	socket.on('PC:CHAT_BROADCAST', function(info) {
+		if(true === info.self) {
+			$('#chatbox').append('<p class="colorBlue"><i class="glyphicon glyphicon-user"></i> '+ info.nickname +': ' + info.message + '</p>');
+			$('input[name="textmsg"]').val('').attr("readonly", false);
+		}
+		else {
+			$('#chatbox').append('<p class="colorBlack"><i class="glyphicon glyphicon-user"></i> '+ info.nickname +': ' + info.message + '</p>');
+		}
+	});
+	
+	//	handle broadcast message
 	socket.on('PC:BROADCAST', function(info) {
-		$('#chat').append("<span style='color:green; padding-left: 5px;'>" + message.msg + "</span></br>");
+		$('#chatbox').append('<p class="colorOrange"><i class="glyphicon glyphicon-fire"></i> ' + info.message + '</p>');
 	});
 });
 	
